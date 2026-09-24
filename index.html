@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="Acompanhe os palpites do De Sola e compare com os resultados reais do Brasileirão 2026.">
+  <title>De Sola × Brasileirão 2026</title>
+  <link rel="icon" type="image/png" href="./assets/de-sola-logo.png">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img class="brand-mark" src="./assets/de-sola-logo.png" alt="Logo do De Sola" width="56" height="56"><div><strong>De Sola <span>× Brasileirão</span></strong><small>Temporada 2026 · acompanhamento independente</small></div></div>
+    <a class="video-link" href="https://www.youtube.com/watch?v=PCiC1YX8raA" target="_blank" rel="noopener noreferrer" aria-label="Assistir ao vídeo original da simulação no YouTube"><img src="./assets/de-sola-integrantes.png" alt="" width="46" height="46"><span>Vídeo da simulação<small>Assistir no YouTube ↗</small></span></a>
+  </header>
+  <main class="shell">
+    <div class="demo-banner" id="demo-banner" hidden><strong>PRÉVIA DE TESTE</strong><span>Os resultados da 29ª rodada nesta tela são fictícios para demonstrar acertos e erros. Nenhum dado oficial foi alterado.</span><a href="./">Voltar aos resultados reais ↗</a></div>
+    <section class="heading">
+      <div><p class="eyebrow">PLACAR DOS PALPITES</p><h1>Até onde o simulador acertou?</h1><p class="intro">Os 103 palpites da simulação, jogo a jogo, comparados aos resultados reais. Os placares usam 0–0 para empate e 1–0 para vitória.</p></div>
+      <div class="source-status"><span class="signal" id="signal"></span><span id="source-status">Carregando resultados...</span><small id="source-time"></small><button class="refresh-button" id="refresh-results" type="button">Atualizar resultados ↻</button></div>
+    </section>
+
+    <section class="metrics" aria-label="Resumo dos palpites">
+      <article class="metric"><span>Palpites registrados</span><strong id="recorded">—</strong><small id="recorded-detail">dos jogos após o vídeo</small></article>
+      <article class="metric"><span>Acerto de resultado</span><strong id="outcome-accuracy">—</strong><small id="outcome-detail">vitória, empate ou derrota</small></article>
+      <article class="metric"><span>Empates previstos</span><strong id="draw-count">—</strong><small>entre os jogos simulados</small></article>
+      <article class="metric"><span>Jogos avaliados</span><strong id="evaluated">—</strong><small>com palpite e placar final</small></article>
+    </section>
+
+    <section class="workspace">
+      <div class="round-card">
+        <div class="section-head"><div><p class="eyebrow">JOGO A JOGO</p><h2>Rodada <span id="round-number">29</span></h2></div><div class="round-controls"><button id="previous" aria-label="Rodada anterior">‹</button><select id="round-select" aria-label="Selecionar rodada"></select><button id="next" aria-label="Próxima rodada">›</button></div></div>
+        <div class="notice" id="notice">Palpites revisados por Huk. O placar simples representa só vitória, empate ou derrota; não mede acerto de placar exato.</div>
+        <div class="game-header"><span>CONFRONTO</span><span>DE SOLA</span><span>REAL · RESULTADO</span></div>
+        <div id="matches" class="matches" aria-live="polite"></div>
+        <div class="round-footer"><span id="round-progress"></span><button id="export-csv" class="text-button">Exportar palpites (.csv) ↗</button></div>
+      </div>
+      <aside class="side-panel">
+        <div class="section-head"><div><p class="eyebrow">ATÉ A RODADA SELECIONADA</p><h2>Tabela lado a lado</h2></div></div>
+        <p class="side-help">A coluna simulada soma os resultados conhecidos quando o vídeo saiu e os 103 palpites confirmados, inclusive três jogos adiados da 21ª rodada.</p>
+        <div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Time</th><th scope="col" title="Pontos reais">Real</th><th scope="col" title="Pontos da simulação">De Sola</th><th scope="col" title="Diferença de pontos: simulação menos realidade">Δ pts</th></tr></thead><tbody id="standings"></tbody></table></div>
+        <p class="table-note" id="table-note"></p>
+      </aside>
+    </section>
+
+    <section class="insights" aria-label="Diferenças por time"><div class="section-head"><div><p class="eyebrow">QUEM GANHOU MAIS NOS PALPITES?</p><h2>Mais favorecidos e prejudicados</h2></div></div><p class="insight-help">Diferença de pontos entre o que foi previsto e o que aconteceu, somente nos jogos com palpite e resultado final.</p><div class="insight-grid"><div class="insight-box"><h3>Favorecidos nos palpites</h3><div id="benefited"></div></div><div class="insight-box"><h3>Prejudicados nos palpites</h3><div id="harmed"></div></div></div></section>
+
+    <details class="data-tools"><summary>Corrigir palpites e entender os dados</summary><div class="tools-inner"><p>Os palpites revisados já vêm preenchidos. Você pode corrigir os placares acima ou importar um CSV com as colunas <code>rodada,mandante,visitante,gols_mandante,gols_visitante</code>. Os times podem ser identificados pelo nome ou código exibido no CSV exportado.</p><label class="upload">Importar CSV <input type="file" id="import-csv" accept=".csv,text/csv"></label><p id="import-feedback" role="status"></p><p>Correções feitas aqui ficam salvas neste navegador. Os resultados reais são consultados em <a href="https://valorfinal.com.br/brasileirao/dados-abertos" target="_blank" rel="noopener noreferrer">Valor Final (CC BY 4.0)</a>, com uma cópia inicial para quando a fonte estiver indisponível. A base da simulação é o estado do campeonato em 24/09/2026. Jogos adiados são computados quando tiverem placar final, mesmo que a rodada visualizada tenha passado.</p><p>Mirassol × Internacional ficou 0–0 para reproduzir a classificação final enviada. Os pontos calculados dos 20 times coincidem com as imagens.</p></div></details>
+  </main>
+  <footer>Projeto independente, sem vínculo com o De Sola. <a href="https://www.youtube.com/watch?v=PCiC1YX8raA" target="_blank" rel="noopener noreferrer">Simulação original no YouTube</a> · <a href="https://valorfinal.com.br/brasileirao/dados-abertos" target="_blank" rel="noopener noreferrer">Fonte dos resultados</a></footer>
+</body>
+</html>
