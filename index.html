@@ -26,7 +26,7 @@
       <article class="metric"><span>Acerto de resultado</span><strong id="outcome-accuracy">—</strong><small id="outcome-detail">vitória, empate ou derrota</small></article>
       <article class="metric"><span>Jogos avaliados</span><strong id="evaluated">—</strong><small>com palpite e placar final</small></article>
       <article class="metric"><span>Visitante realmente ganha?</span><strong id="away-real">—</strong><small id="away-real-detail">entre os jogos avaliados</small></article>
-      <article class="metric"><span>Acertos recentes</span><strong id="recent-accuracy">—</strong><small id="recent-detail">nos últimos cinco jogos encerrados</small></article>
+      <article class="metric"><span>Média de acerto por rodada</span><strong id="round-average">—</strong><small id="round-average-detail">rodadas com jogos avaliados</small></article>
     </section>
 
     <section class="workspace">
@@ -38,9 +38,10 @@
         <div class="round-footer"><span id="round-progress"></span><button id="export-csv" class="text-button">Exportar palpites (.csv) ↗</button></div>
       </div>
       <aside class="side-panel">
-        <div class="section-head"><div><p class="eyebrow">ATÉ A RODADA SELECIONADA</p><h2>Tabela lado a lado</h2></div></div>
-        <p class="side-help">A coluna simulada soma os resultados conhecidos quando o vídeo saiu e os 103 palpites confirmados, inclusive três jogos adiados da 21ª rodada.</p>
-        <div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Time</th><th scope="col" title="Pontos reais">Real</th><th scope="col" title="Pontos da simulação">De Sola</th><th scope="col" title="Diferença de pontos: simulação menos realidade">Δ pts</th></tr></thead><tbody id="standings"></tbody></table></div>
+        <div class="section-head"><div><p class="eyebrow">ATÉ A RODADA SELECIONADA</p><h2>Classificação comparada</h2></div></div>
+        <div class="standings-switch" role="group" aria-label="Ordenar classificação"><button id="view-real" type="button" aria-pressed="true">Real</button><button id="view-desola" type="button" aria-pressed="false">De Sola</button></div>
+        <p class="side-help">Alterne para ordenar pelos pontos reais ou pela simulação. A posição na outra tabela aparece ao lado.</p>
+        <div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Time</th><th scope="col" id="points-header">Pontos</th><th scope="col" id="other-position-header">Outra pos.</th><th scope="col" title="Mudança de posição na simulação em relação à tabela real">Δ pos.</th></tr></thead><tbody id="standings"></tbody></table></div>
         <p class="table-note" id="table-note"></p>
       </aside>
     </section>
