@@ -29,9 +29,6 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid
 .video-link img { width: 46px; height: 46px; object-fit: cover; border-radius: 5px }
 .video-link small { font-size: 12px; color: var(--yellow); font-weight: 600; margin-top: 2px }
 .shell { max-width: 1416px; padding: 34px 28px 75px; margin: auto }
-.preview-banner { display: flex; gap: 10px 16px; align-items: center; flex-wrap: wrap; background: #27220f; border: 1px solid #8d7725; border-radius: 9px; padding: 11px 15px; margin-bottom: 24px; font-size: 13px; color: #dfd6b2 }
-.preview-banner strong { color: var(--yellow); font-size: 11px; letter-spacing: .11em; white-space: nowrap }
-.preview-banner a { font-weight: 700 }
 .demo-banner { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; background: #463c12; border: 2px solid var(--yellow); border-radius: 10px; padding: 12px 15px; margin-bottom: 24px; color: #f8f1c8; font-size: 13px; line-height: 1.4 }
 .demo-banner[hidden] { display: none }
 .demo-banner strong { color: var(--yellow); white-space: nowrap; font-size: 12px; letter-spacing: .09em }
@@ -63,12 +60,11 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .page-tabs a { display: inline-flex; align-items: center; gap: 9px; padding: 12px 19px; color: #b6b4ad; font-weight: 750; font-size: 14px; text-decoration: none; border-bottom: 3px solid transparent }
 .page-tabs a:hover { color: #fff }
 .page-tabs a[aria-current="page"] { color: var(--yellow); border-color: var(--yellow) }
-.page-tabs span { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; border: 1px solid #887625; color: var(--yellow); padding: 2px 5px; border-radius: 4px }
 .analysis-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 9px 0 21px }
 .analysis-heading h2 { font-size: clamp(26px, 2.8vw, 34px); margin-bottom: 8px }
 .analysis-heading p:last-child { margin: 0; color: #b8b5a9; line-height: 1.5; max-width: 730px; font-size: 14px }
 .sample-pill { border: 1px solid #76651e; background: #282312; color: #f9df69; border-radius: 999px; padding: 7px 11px; font-size: 12px; font-weight: 750; white-space: nowrap }
-.analysis-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; align-items: start }
+.analysis-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; align-items: stretch }
 .analysis-card { background: var(--panel); border: 1px solid var(--stroke); border-radius: 12px; padding: 23px; min-width: 0 }
 .analysis-card h3 { font-size: 19px; letter-spacing: -.025em; line-height: 1.25; margin-bottom: 10px }
 .card-intro { font-size: 13px; color: #aaa89f; line-height: 1.5; margin-bottom: 20px }
