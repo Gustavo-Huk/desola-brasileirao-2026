@@ -75,6 +75,17 @@ function renderAnalysis(){
   for(const [id,type] of [['real-home',1],['real-draw',0],['real-away',-1]])$(id).textContent=actualTotals.get(type);
   $('matrix-total').textContent=evaluated;
   $('matrix-note').textContent=evaluated?`${correct} acertos e ${evaluated-correct} erros em ${evaluated} jogos. Cada jogo entra uma única vez.`:'Aguardando resultados.';
+  const homeWins=actualTotals.get(1),delta=evaluated?(correct-homeWins)/evaluated*100:0;
+  const pct=count=>`${(count/evaluated*100).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%`;
+  $('benchmark-delta').textContent=evaluated?`${delta>0?'+':''}${delta.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.`:'—';
+  $('benchmark-delta').className=delta>0?'positive':delta<0?'negative':'';
+  const benchmark=$('benchmark-list');benchmark.replaceChildren();
+  for(const [label,count,featured] of [['De Sola',correct,true],['Sempre mandante',homeWins,false]]){
+    const item=element('div',`benchmark-item${featured?' featured':''}`),line=element('div','benchmark-line');
+    line.append(element('strong','',label),element('span','',evaluated?`${pct(count)} · ${count} de ${evaluated}`:'—'));
+    const track=element('div','bar-track'),fill=element('span','bar-fill');fill.style.width=evaluated?`${count/evaluated*100}%`:'0%';
+    track.append(fill);item.append(line,track);benchmark.append(item);
+  }
 }
 function selectView(){const analysis=location.hash==='#analises';$('overview-panel').hidden=analysis;$('analysis-panel').hidden=!analysis;for(const [id,active] of [['tab-overview',!analysis],['tab-analysis',analysis]]){if(active)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current')}}
 function renderAll(){renderGames();renderTable();renderInsights();renderAnalysis()}

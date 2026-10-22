@@ -90,6 +90,20 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .matrix-table .matrix-miss { color: #d9d6cf }
 .matrix-table .matrix-total, .matrix-table tfoot td { color: #a8a49a; font-size: 13px }
 .matrix-table tfoot th, .matrix-table tfoot td { border-bottom: 0; border-top: 2px solid #4c493b }
+.benchmark-card { margin-top: 18px }
+.benchmark-heading { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start }
+.benchmark-heading .card-intro { max-width: 690px; margin-bottom: 19px }
+.benchmark-difference { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; font-variant-numeric: tabular-nums }
+.benchmark-difference span { color: #a9a69b; font-size: 12px }
+.benchmark-difference strong { font-size: 24px; letter-spacing: -.03em }
+.benchmark-difference .positive { color: #a2e6b9 }
+.benchmark-difference .negative { color: #ffb8ab }
+.benchmark-list { max-width: 690px }
+.benchmark-item + .benchmark-item { margin-top: 20px }
+.benchmark-line { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 14px; font-variant-numeric: tabular-nums }
+.benchmark-line span { color: #d4d1c7 }
+.benchmark-item.featured .benchmark-line span { color: var(--yellow); font-weight: 800 }
+.benchmark-item:not(.featured) .bar-fill { background: #aaa69a }
 .workspace { display: grid; grid-template-columns: minmax(0, 1.48fr) minmax(370px, 1fr); gap: 20px }
 .round-card, .side-panel, .insights { padding: 23px }
 .section-head { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px }
@@ -173,6 +187,8 @@ footer a { color: #f2dc68 }
   .round-footer { align-items: flex-start } .round-footer span { max-width: 150px }
   .analysis-heading { align-items: flex-start; flex-direction: column }
   .analysis-card { padding: 17px }
+  .benchmark-heading { flex-direction: column; gap: 0 }
+  .benchmark-difference { align-items: flex-start; margin-bottom: 20px }
   .page-tabs a { padding: 10px 13px }
 }
 @media (max-width: 390px) { .game-header, .match { grid-template-columns: minmax(0, 1fr) 82px 75px } .score-box { width: 29px } }
