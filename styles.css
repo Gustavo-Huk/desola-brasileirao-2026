@@ -104,8 +104,9 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .projection-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px }
 .projection-heading .card-intro { max-width: 730px }
 .projection-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
-.projection-table th { color: #aaa69b; font-size: 11px; text-align: left; white-space: nowrap }
-.projection-table th, .projection-table td { padding: 11px 10px; border-bottom: 1px solid var(--stroke) }
+.projection-table th { color: #aaa69b; font-size: 11px; white-space: nowrap }
+.projection-table th, .projection-table td { padding: 11px 10px; border-bottom: 1px solid var(--stroke); text-align: center }
+.projection-table th:nth-child(2), .projection-table td:nth-child(2) { text-align: left }
 .projection-table td { font-size: 13px }
 .projection-table td:nth-child(2) { min-width: 145px; font-weight: 700 }
 .projection-table .scenario-points { color: var(--yellow); font-weight: 800 }
