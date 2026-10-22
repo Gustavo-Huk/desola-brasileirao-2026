@@ -16,14 +16,14 @@
     <a class="video-link" href="https://www.youtube.com/watch?v=PCiC1YX8raA" target="_blank" rel="noopener noreferrer" aria-label="Assistir ao vídeo original da simulação no YouTube"><img src="./assets/de-sola-integrantes.png" alt="" width="46" height="46"><span>Vídeo da simulação<small>Assistir no YouTube ↗</small></span></a>
   </header>
   <main class="shell">
-    <div class="preview-banner"><strong>PRÉVIA PARA AVALIAÇÃO</strong><span>A aba Análises está em teste. A versão de produção continua no <a href="https://desola-brasileirao-2026.vercel.app/">site principal ↗</a>.</span></div>
+    <div class="preview-banner"><strong>PRÉVIA PARA AVALIAÇÃO</strong><span>Acerto por rodada está em teste. A versão de produção continua no <a href="https://desola-brasileirao-2026.vercel.app/">site principal ↗</a>.</span></div>
     <div class="demo-banner" id="demo-banner" hidden><strong>PRÉVIA DE TESTE</strong><span>Os resultados da 29ª rodada nesta tela são fictícios para demonstrar acertos e erros. Nenhum dado oficial foi alterado.</span><a href="./">Voltar aos resultados reais ↗</a></div>
     <section class="heading">
       <div><p class="eyebrow">PLACAR DOS PALPITES</p><h1>Até onde o simulador acertou?</h1><p class="intro"><span>Os 103 palpites da simulação, jogo a jogo, comparados aos resultados reais.</span><span>Os placares usam 0–0 para empate e 1–0 para vitória.</span></p></div>
       <div class="source-status"><span class="signal" id="signal"></span><span id="source-status">Carregando resultados...</span><small id="source-time"></small><button class="refresh-button" id="refresh-results" type="button">Atualizar resultados ↻</button></div>
     </section>
 
-    <nav class="page-tabs" aria-label="Seções do painel"><a id="tab-overview" href="#painel" aria-current="page">Painel</a><a id="tab-analysis" href="#analises">Análises <span>Prévia</span></a></nav>
+    <nav class="page-tabs" aria-label="Seções do painel"><a id="tab-overview" href="#painel" aria-current="page">Painel</a><a id="tab-analysis" href="#analises">Acerto por rodada <span>Prévia</span></a></nav>
 
     <div id="overview-panel">
 
@@ -55,19 +55,8 @@
     </div>
 
     <section id="analysis-panel" class="analysis-page" aria-labelledby="analysis-title" hidden>
-      <div class="analysis-heading"><div><p class="eyebrow">ALÉM DO PLACAR</p><h2 id="analysis-title">Como os palpites estão se saindo?</h2><p>Compare as escolhas do De Sola com os resultados dos mesmos jogos. Os números mudam conforme novos placares são confirmados.</p></div><span class="sample-pill" id="analysis-sample">Aguardando resultados</span></div>
-
-      <div class="analysis-grid">
-        <article class="analysis-card benchmark-card"><div class="card-top"><div><p class="eyebrow">REFERÊNCIA SIMPLES</p><h3>Acertam mais que escolher sempre o mandante?</h3></div><span class="metric-delta" id="benchmark-delta">—</span></div><p class="card-intro">As duas estratégias são avaliadas nos mesmos jogos encerrados. A referência acerta toda vez que o mandante vence.</p><div class="benchmark-list" id="benchmark-list"></div><p class="fine-print">Comparação descritiva. Com poucos jogos, uma diferença pequena pode mudar rapidamente.</p></article>
-        <article class="analysis-card matrix-card"><p class="eyebrow">ONDE ACERTARAM E ERRARAM</p><h3>Matriz de resultados</h3><p class="card-intro">Linhas: palpite. Colunas: resultado real. A diagonal amarela representa os acertos.</p><div class="table-wrap"><table class="matrix-table"><thead><tr><th scope="col">Palpite ↓ / Real →</th><th scope="col">Mandante</th><th scope="col">Empate</th><th scope="col">Visitante</th><th scope="col">Total</th></tr></thead><tbody id="outcome-matrix"></tbody></table></div><p class="fine-print" id="matrix-note"></p></article>
-      </div>
-
-      <div class="analysis-grid secondary-grid">
-        <article class="analysis-card"><p class="eyebrow">MESMA AMOSTRA</p><h3>O que previram × o que aconteceu</h3><p class="card-intro">Distribuição dos três resultados somente entre jogos com palpite e placar final.</p><div id="outcome-distribution" class="distribution"></div></article>
-        <article class="analysis-card"><p class="eyebrow">LINHA DO TEMPO</p><h3>Acerto por rodada</h3><p class="card-intro">Cada barra mostra acertos divididos por jogos encerrados daquela rodada.</p><div id="round-analysis" class="round-analysis"></div><p class="fine-print">Rodadas ainda parciais e jogos adiados podem ter amostras menores.</p></article>
-      </div>
-
-      <article class="analysis-card projection-card"><div class="projection-head"><div><p class="eyebrow">CENÁRIO CONDICIONAL</p><h3>Se os palpites restantes acontecerem</h3><p class="card-intro">Resultados confirmados até agora + palpites do De Sola para os jogos ainda sem placar.</p></div><span class="sample-pill" id="projection-pending">— jogos pendentes</span></div><div class="table-wrap"><table class="projection-table"><thead><tr><th scope="col">#</th><th scope="col">Time</th><th scope="col">Pos. atual</th><th scope="col">Pts atuais</th><th scope="col">Pts no cenário</th><th scope="col">Δ pos.</th></tr></thead><tbody id="projection-standings"></tbody></table></div><p class="fine-print">É uma simulação determinística, sem probabilidade de título ou rebaixamento. Os placares simplificados podem alterar critérios de desempate; posições empatadas são provisórias.</p></article>
+      <div class="analysis-heading"><div><p class="eyebrow">EVOLUÇÃO DOS PALPITES</p><h2 id="analysis-title">Acerto por rodada</h2><p>Resultado correto significa acertar mandante, empate ou visitante. Os números acompanham apenas jogos com palpite e placar final.</p></div><span class="sample-pill" id="analysis-sample">Aguardando resultados</span></div>
+      <article class="analysis-card round-feature"><p class="eyebrow">LINHA DO TEMPO</p><h3>Rodada a rodada</h3><p class="card-intro">Cada barra mostra a proporção de acertos entre os jogos avaliados daquela rodada. O número de jogos aparece ao lado para contextualizar rodadas parciais.</p><div id="round-analysis" class="round-analysis"></div><p class="fine-print">Jogos adiados aparecem na rodada original. Rodadas ainda parciais podem mudar conforme novos resultados chegam.</p></article>
     </section>
 
   </main>

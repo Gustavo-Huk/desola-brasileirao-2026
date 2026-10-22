@@ -68,45 +68,19 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .analysis-heading h2 { font-size: clamp(26px, 2.8vw, 34px); margin-bottom: 8px }
 .analysis-heading p:last-child { margin: 0; color: #b8b5a9; line-height: 1.5; max-width: 730px; font-size: 14px }
 .sample-pill { border: 1px solid #76651e; background: #282312; color: #f9df69; border-radius: 999px; padding: 7px 11px; font-size: 12px; font-weight: 750; white-space: nowrap }
-.analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; margin-bottom: 17px }
 .analysis-card { background: var(--panel); border: 1px solid var(--stroke); border-radius: 12px; padding: 23px; min-width: 0 }
+.round-feature { max-width: 760px }
 .analysis-card h3 { font-size: 19px; letter-spacing: -.025em; line-height: 1.25; margin-bottom: 10px }
 .card-intro { font-size: 13px; color: #aaa89f; line-height: 1.5; margin-bottom: 20px }
 .fine-print { font-size: 12px; color: #938f84; line-height: 1.5; margin: 18px 0 0 }
-.card-top, .projection-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px }
-.metric-delta { flex: none; font-size: 21px; font-weight: 850; font-variant-numeric: tabular-nums; white-space: nowrap }
-.metric-delta.positive { color: #a2e6b9 }.metric-delta.negative { color: #ffb8ab }
-.benchmark-item + .benchmark-item { margin-top: 21px }
-.benchmark-line, .round-analysis-line { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 14px; margin-bottom: 9px }
-.benchmark-line span, .round-analysis-line span { font-variant-numeric: tabular-nums; color: #d3d0c5 }
-.benchmark-item.featured .benchmark-line span { color: var(--yellow); font-size: 19px; font-weight: 850 }
+.round-analysis-line { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 14px; margin-bottom: 9px }
+.round-analysis-line span { font-variant-numeric: tabular-nums; color: #d3d0c5 }
 .bar-track { width: 100%; height: 9px; background: #30302e; overflow: hidden; border-radius: 99px }
-.bar-fill { display: block; height: 100%; background: #84817a; border-radius: inherit; transition: width .25s ease }
-.featured .bar-fill, .round-analysis-row .bar-fill { background: var(--yellow) }
-.matrix-table th, .matrix-table td { text-align: center; padding: 13px 7px; font-size: 12px }
-.matrix-table th:first-child { text-align: left; min-width: 105px }
-.matrix-table td { font-size: 17px; font-weight: 750 }
-.matrix-table .matrix-hit { background: #332e13; color: var(--yellow) }
-.matrix-table .matrix-total { color: #b8b3a0 }
-.distribution-group { border-top: 1px solid var(--stroke); padding: 14px 0 6px }
-.distribution-group:first-child { border-top: 0; padding-top: 0 }
-.distribution-group > strong { display: block; margin-bottom: 9px; font-size: 14px }
-.distribution-line { display: grid; grid-template-columns: 54px minmax(0, 1fr) 42px; gap: 9px; align-items: center; margin: 7px 0; font-size: 12px; color: #a8a69d }
-.distribution-line b { color: #dbd8cb; text-align: right; font-variant-numeric: tabular-nums }
-.distribution-line .bar-track { height: 8px }
-.distribution-line .predicted { background: var(--yellow) }
-.distribution-line .observed { background: #a6a49b }
+.bar-fill { display: block; height: 100%; background: var(--yellow); border-radius: inherit; transition: width .25s ease }
 .round-analysis-row { border-top: 1px solid var(--stroke); padding: 12px 0 }
 .round-analysis-row:first-child { border-top: 0; padding-top: 0 }
 .round-analysis-line { font-size: 13px; margin-bottom: 7px }
 .round-analysis-row .bar-track { height: 7px }
-.projection-card { margin-top: 1px }
-.projection-head { margin-bottom: 7px }
-.projection-head .card-intro { margin-bottom: 13px }
-.projection-table th, .projection-table td { padding: 9px 10px }
-.projection-table th:first-child, .projection-table td:first-child { width: 40px }
-.projection-table td:nth-child(2) { min-width: 130px }
-.projection-table td.active-points { color: var(--yellow); font-weight: 800 }
 .workspace { display: grid; grid-template-columns: minmax(0, 1.48fr) minmax(370px, 1fr); gap: 20px }
 .round-card, .side-panel, .insights { padding: 23px }
 .section-head { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px }
@@ -188,10 +162,8 @@ footer a { color: #f2dc68 }
   .verdict { font-size: 11px !important; padding: 3px 4px }
   .insight-grid { grid-template-columns: 1fr }
   .round-footer { align-items: flex-start } .round-footer span { max-width: 150px }
-  .analysis-heading, .projection-head { align-items: flex-start; flex-direction: column }
+  .analysis-heading { align-items: flex-start; flex-direction: column }
   .analysis-card { padding: 17px }
   .page-tabs a { padding: 10px 13px }
-  .matrix-table th, .matrix-table td { padding: 10px 5px; font-size: 11px }
-  .matrix-table td { font-size: 15px }
 }
 @media (max-width: 390px) { .game-header, .match { grid-template-columns: minmax(0, 1fr) 82px 75px } .score-box { width: 29px } }
