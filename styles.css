@@ -104,6 +104,17 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .benchmark-line span { color: #d4d1c7 }
 .benchmark-item.featured .benchmark-line span { color: var(--yellow); font-weight: 800 }
 .benchmark-item:not(.featured) .bar-fill { background: #aaa69a }
+.projection-card { margin-top: 18px }
+.projection-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px }
+.projection-heading .card-intro { max-width: 730px }
+.projection-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+.projection-table th { color: #aaa69b; font-size: 11px; text-align: left; white-space: nowrap }
+.projection-table th, .projection-table td { padding: 11px 10px; border-bottom: 1px solid var(--stroke) }
+.projection-table td { font-size: 13px }
+.projection-table td:nth-child(2) { min-width: 145px; font-weight: 700 }
+.projection-table .scenario-points { color: var(--yellow); font-weight: 800 }
+.projection-table .rank { color: #aaa69b }
+.projection-table td:last-child { font-weight: 750; white-space: nowrap }
 .workspace { display: grid; grid-template-columns: minmax(0, 1.48fr) minmax(370px, 1fr); gap: 20px }
 .round-card, .side-panel, .insights { padding: 23px }
 .section-head { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px }
@@ -189,6 +200,8 @@ footer a { color: #f2dc68 }
   .analysis-card { padding: 17px }
   .benchmark-heading { flex-direction: column; gap: 0 }
   .benchmark-difference { align-items: flex-start; margin-bottom: 20px }
+  .projection-heading { flex-direction: column; gap: 0 }
+  .projection-heading .sample-pill { margin-bottom: 18px }
   .page-tabs a { padding: 10px 13px }
 }
 @media (max-width: 390px) { .game-header, .match { grid-template-columns: minmax(0, 1fr) 82px 75px } .score-box { width: 29px } }

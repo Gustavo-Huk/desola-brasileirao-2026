@@ -26,9 +26,9 @@ function renderGames(){const games=gamesOfRound(selectedRound),list=$('matches')
   }
   const n=games.filter(prediction).length;$('round-progress').textContent=`${n} de ${games.length} palpites nesta rodada`;
 }
-function standings(round,predicted){const scores=new Map(current.acervo.times.map(t=>[t.code,{code:t.code,name:t.nome,pts:0,gf:0,ga:0,w:0}]));for(const game of allGames()){
+function standings(round,predicted,projection=false){const scores=new Map(current.acervo.times.map(t=>[t.code,{code:t.code,name:t.nome,pts:0,gf:0,ga:0,w:0}]));for(const game of allGames()){
     if(game.rodada>round)continue;
-    const score=predicted?(eligible(game)?prediction(game):result(game)):result(game);if(!score)continue;
+    const score=projection?(result(game)||(eligible(game)?prediction(game):null)):(predicted?(eligible(game)?prediction(game):result(game)):result(game));if(!score)continue;
     for(const [team,side,goals,against] of [[game.mandante,'home',score.home,score.away],[game.visitante,'away',score.away,score.home]]){const s=scores.get(team);if(!s)continue;s.pts+=points(score,side);s.gf+=goals;s.ga+=against;if(goals>against)s.w++}
   }return [...scores.values()].sort((a,b)=>b.pts-a.pts||b.w-a.w||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.name.localeCompare(b.name,'pt-BR'))}
 function renderTable(){const actual=standings(selectedRound,false),sim=standings(selectedRound,true),realRank=new Map(actual.map((t,i)=>[t.code,i+1])),simRank=new Map(sim.map((t,i)=>[t.code,i+1])),realPoints=new Map(actual.map(t=>[t.code,t.pts])),simPoints=new Map(sim.map(t=>[t.code,t.pts]));const showingReal=tableView==='real',ordered=showingReal?actual:sim,otherRank=showingReal?simRank:realRank,body=$('standings');
@@ -86,6 +86,18 @@ function renderAnalysis(){
     const track=element('div','bar-track'),fill=element('span','bar-fill');fill.style.width=evaluated?`${count/evaluated*100}%`:'0%';
     track.append(fill);item.append(line,track);benchmark.append(item);
   }
+  const actual=standings(38,false),projected=standings(38,false,true);
+  const actualRank=new Map(actual.map((team,i)=>[team.code,i+1])),actualPts=new Map(actual.map(team=>[team.code,team.pts]));
+  const pending=allGames().filter(game=>eligible(game)&&prediction(game)&&!result(game)).length;
+  const withoutPrediction=allGames().filter(game=>!result(game)&&!prediction(game)).length;
+  $('projection-pending').textContent=`${pending} ${pending===1?'palpite pendente':'palpites pendentes'}`;
+  const projectedRows=$('projection-standings');projectedRows.replaceChildren();
+  for(const [i,team] of projected.entries()){
+    const rank=i+1,movement=actualRank.get(team.code)-rank,tr=element('tr');
+    for(const [cls,value] of [['rank',`${rank}.`],['',team.name],['rank',`${actualRank.get(team.code)}.`],['',actualPts.get(team.code)],['scenario-points',team.pts],[movement>0?'positive':movement<0?'negative':'',movement>0?`↑ ${movement}`:movement<0?`↓ ${-movement}`:'—']])tr.append(element('td',cls,value));
+    projectedRows.append(tr);
+  }
+  $('projection-coverage').textContent=withoutPrediction?`${withoutPrediction} ${withoutPrediction===1?'jogo futuro sem palpite':'jogos futuros sem palpite'} não entra no cenário. Posições em empates de pontos e vitórias são provisórias: os placares simplificados não preservam o saldo real.`:'Posições em empates de pontos e vitórias são provisórias: os placares simplificados não preservam o saldo real.';
 }
 function selectView(){const analysis=location.hash==='#analises';$('overview-panel').hidden=analysis;$('analysis-panel').hidden=!analysis;for(const [id,active] of [['tab-overview',!analysis],['tab-analysis',analysis]]){if(active)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current')}}
 function renderAll(){renderGames();renderTable();renderInsights();renderAnalysis()}
