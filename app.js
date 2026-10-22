@@ -26,9 +26,9 @@ function renderGames(){const games=gamesOfRound(selectedRound),list=$('matches')
   }
   const n=games.filter(prediction).length;$('round-progress').textContent=`${n} de ${games.length} palpites nesta rodada`;
 }
-function standings(round,predicted){const scores=new Map(current.acervo.times.map(t=>[t.code,{code:t.code,name:t.nome,pts:0,gf:0,ga:0,w:0}]));for(const game of allGames()){
+function standings(round,predicted,projection=false){const scores=new Map(current.acervo.times.map(t=>[t.code,{code:t.code,name:t.nome,pts:0,gf:0,ga:0,w:0}]));for(const game of allGames()){
     if(game.rodada>round)continue;
-    const score=predicted?(eligible(game)?prediction(game):result(game)):result(game);if(!score)continue;
+    const score=projection?(result(game)||(eligible(game)?prediction(game):null)):(predicted?(eligible(game)?prediction(game):result(game)):result(game));if(!score)continue;
     for(const [team,side,goals,against] of [[game.mandante,'home',score.home,score.away],[game.visitante,'away',score.away,score.home]]){const s=scores.get(team);if(!s)continue;s.pts+=points(score,side);s.gf+=goals;s.ga+=against;if(goals>against)s.w++}
   }return [...scores.values()].sort((a,b)=>b.pts-a.pts||b.w-a.w||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.name.localeCompare(b.name,'pt-BR'))}
 function renderTable(){const actual=standings(selectedRound,false),sim=standings(selectedRound,true),realRank=new Map(actual.map((t,i)=>[t.code,i+1])),simRank=new Map(sim.map((t,i)=>[t.code,i+1])),realPoints=new Map(actual.map(t=>[t.code,t.pts])),simPoints=new Map(sim.map(t=>[t.code,t.pts]));const showingReal=tableView==='real',ordered=showingReal?actual:sim,otherRank=showingReal?simRank:realRank,body=$('standings');
@@ -43,12 +43,69 @@ function renderInsights(){const delta=new Map(current.acervo.times.map(t=>[t.cod
   const roundAverage=[...byRound.values()].reduce((sum,tally)=>sum+tally.correct/tally.games,0)/byRound.size;
   $('round-average').textContent=byRound.size?`${Math.round(roundAverage*100)}%`:'—';$('round-average-detail').textContent=byRound.size?`${byRound.size} ${byRound.size===1?'rodada avaliada':'rodadas avaliadas'} · mesmo peso por rodada`:'aguardando jogos encerrados';
   function fill(id,items){const host=$(id);host.replaceChildren();if(!items.length){host.append(element('p','insight-empty','Os desvios aparecerão quando houver palpites para jogos encerrados.'));return}for(const [code,value] of items.slice(0,5)){const row=element('div','insight-row');row.append(element('span','',teamName(code)),element('strong',value>0?'positive':'negative',`${value>0?'+':''}${value} pts`));host.append(row)}}const entries=[...delta].filter(([,v])=>v!==0);fill('benefited',entries.filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]));fill('harmed',entries.filter(([,v])=>v<0).sort((a,b)=>a[1]-b[1]))}
-function renderAll(){renderGames();renderTable();renderInsights()}
+function renderAnalysis(){
+  const rounds=new Map(),types=[{id:1,label:'Mandante'},{id:0,label:'Empate'},{id:-1,label:'Visitante'}];
+  const matrix=new Map(types.map(type=>[type.id,new Map(types.map(actual=>[actual.id,0]))]));
+  const actualTotals=new Map(types.map(type=>[type.id,0]));let evaluated=0,correct=0;
+  for(const game of allGames().filter(eligible)){
+    const p=prediction(game),r=result(game);if(!p||!r)continue;
+    const guessed=outcome(p),actual=outcome(r);
+    matrix.get(guessed).set(actual,matrix.get(guessed).get(actual)+1);
+    actualTotals.set(actual,actualTotals.get(actual)+1);
+    evaluated++;const tally=rounds.get(game.rodada)||{games:0,correct:0};
+    tally.games++;if(guessed===actual){tally.correct++;correct++}
+    rounds.set(game.rodada,tally);
+  }
+  $('analysis-sample').textContent=evaluated?`${evaluated} ${evaluated===1?'jogo avaliado':'jogos avaliados'} · ${rounds.size} ${rounds.size===1?'rodada':'rodadas'}`:'Aguardando resultados';
+  const host=$('round-analysis');host.replaceChildren();
+  if(!rounds.size)host.append(element('p','insight-empty','Aguardando jogos encerrados.'));
+  for(const [round,tally] of [...rounds].sort((a,b)=>a[0]-b[0])){
+    const item=element('div','round-analysis-row'),heading=element('div','round-analysis-line');
+    heading.append(element('strong','',round===21?'Rodada 21 · adiados':`Rodada ${round}`),element('span','',`${tally.correct} de ${tally.games} · ${Math.round(tally.correct/tally.games*100)}%`));
+    const track=element('div','bar-track'),fill=element('span','bar-fill');
+    fill.style.width=`${tally.correct/tally.games*100}%`;track.append(fill);item.append(heading,track);host.append(item);
+  }
+  const body=$('outcome-matrix');body.replaceChildren();
+  for(const type of types){
+    const tr=element('tr'),heading=element('th','',type.label);heading.scope='row';tr.append(heading);
+    let rowTotal=0;
+    for(const actual of types){const count=matrix.get(type.id).get(actual.id);rowTotal+=count;tr.append(element('td',type.id===actual.id?'matrix-hit':'matrix-miss',count))}
+    tr.append(element('td','matrix-total',rowTotal));body.append(tr);
+  }
+  for(const [id,type] of [['real-home',1],['real-draw',0],['real-away',-1]])$(id).textContent=actualTotals.get(type);
+  $('matrix-total').textContent=evaluated;
+  $('matrix-note').textContent=evaluated?`${correct} acertos e ${evaluated-correct} erros em ${evaluated} jogos. Cada jogo entra uma única vez.`:'Aguardando resultados.';
+  const homeWins=actualTotals.get(1),delta=evaluated?(correct-homeWins)/evaluated*100:0;
+  const pct=count=>`${(count/evaluated*100).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%`;
+  $('benchmark-delta').textContent=evaluated?`${delta>0?'+':''}${delta.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.`:'—';
+  $('benchmark-delta').className=delta>0?'positive':delta<0?'negative':'';
+  const benchmark=$('benchmark-list');benchmark.replaceChildren();
+  for(const [label,count,featured] of [['De Sola',correct,true],['Sempre mandante',homeWins,false]]){
+    const item=element('div',`benchmark-item${featured?' featured':''}`),line=element('div','benchmark-line');
+    line.append(element('strong','',label),element('span','',evaluated?`${pct(count)} · ${count} de ${evaluated}`:'—'));
+    const track=element('div','bar-track'),fill=element('span','bar-fill');fill.style.width=evaluated?`${count/evaluated*100}%`:'0%';
+    track.append(fill);item.append(line,track);benchmark.append(item);
+  }
+  const actual=standings(38,false),projected=standings(38,false,true);
+  const actualRank=new Map(actual.map((team,i)=>[team.code,i+1])),actualPts=new Map(actual.map(team=>[team.code,team.pts]));
+  const pending=allGames().filter(game=>eligible(game)&&prediction(game)&&!result(game)).length;
+  const withoutPrediction=allGames().filter(game=>!result(game)&&!prediction(game)).length;
+  $('projection-pending').textContent=`${pending} ${pending===1?'palpite pendente':'palpites pendentes'}`;
+  const projectedRows=$('projection-standings');projectedRows.replaceChildren();
+  for(const [i,team] of projected.entries()){
+    const rank=i+1,movement=actualRank.get(team.code)-rank,tr=element('tr');
+    for(const [cls,value] of [['rank',`${rank}.`],['',team.name],['rank',`${actualRank.get(team.code)}.`],['',actualPts.get(team.code)],['scenario-points',team.pts],[movement>0?'positive':movement<0?'negative':'',movement>0?`↑ ${movement}`:movement<0?`↓ ${-movement}`:'—']])tr.append(element('td',cls,value));
+    projectedRows.append(tr);
+  }
+  $('projection-coverage').textContent=withoutPrediction?`${withoutPrediction} ${withoutPrediction===1?'jogo futuro sem palpite':'jogos futuros sem palpite'} não entra no cenário. Posições em empates de pontos e vitórias são provisórias: os placares simplificados não preservam o saldo real.`:'Posições em empates de pontos e vitórias são provisórias: os placares simplificados não preservam o saldo real.';
+}
+function selectView(){const analysis=location.hash==='#analises';$('overview-panel').hidden=analysis;$('analysis-panel').hidden=!analysis;for(const [id,active] of [['tab-overview',!analysis],['tab-analysis',analysis]]){if(active)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current')}}
+function renderAll(){renderGames();renderTable();renderInsights();renderAnalysis()}
 function exportCSV(){const header='rodada,mandante,visitante,gols_mandante,gols_visitante';const rows=allGames().filter(eligible).map(g=>{const p=prediction(g);return [g.rodada,g.mandante,g.visitante,p?.home??'',p?.away??''].join(',')});const blob=new Blob(['\ufeff'+[header,...rows].join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='palpites-desola-brasileirao-2026.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 async function refreshResults(){const button=$('refresh-results');button.disabled=true;$('source-status').textContent='Consultando resultados...';try{const response=await fetch(LIVE_URL,{cache:'no-store',signal:AbortSignal.timeout(12000)});if(!response.ok)throw Error(`HTTP ${response.status}`);const latest=await response.json();if(!Array.isArray(latest?.acervo?.jogos)||latest.acervo.jogos.length!==380||!Array.isArray(latest?.acervo?.times))throw Error('Formato inesperado');current=latest;if(!roundChosenByUser)selectedRound=latestRoundWithResult();$('source-status').textContent='Resultados consultados';$('source-time').textContent=`Fonte: ${new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Sao_Paulo'}).format(new Date(latest.acervo.atualizadoEm))}`;$('signal').classList.add('online');renderAll()}catch{if(!roundChosenByUser){selectedRound=latestRoundWithResult();renderAll()}$('source-status').textContent=current===initial?'Exibindo cópia inicial':'Última consulta mantida';$('source-time').textContent=current===initial?'A atualização automática está indisponível.':'A fonte está indisponível no momento.';$('signal').classList.remove('online')}finally{button.disabled=false}}
 function showDemo(){current=structuredClone(initial);const games=current.acervo.jogos.filter(g=>g.rodada===29&&eligible(g));for(const [i,game] of games.entries()){const p=prediction(game);if(!p)continue;const correct=i%2===0;let home,away;if(correct){[home,away]=outcome(p)===0?[2,2]:outcome(p)>0?[2,1]:[1,2]}else{[home,away]=outcome(p)>0?[0,2]:[2,0]}game.status='finalizado';game.placar={mandante:home,visitante:away}}document.body.classList.add('demo-mode');$('demo-banner').hidden=false;$('refresh-results').hidden=true;$('source-status').textContent='Resultados fictícios';$('source-time').textContent='Demonstração · rodada 29';renderAll();$('round-select').disabled=true;$('previous').disabled=true;$('next').disabled=true}
 async function init(){const [base,seed]=await Promise.all([fetch('./estado-inicial.json').then(r=>{if(!r.ok)throw Error('Base inicial indisponível');return r.json()}),fetch('./palpites-desola.json').then(r=>{if(!r.ok)throw Error('Palpites indisponíveis');return r.json()})]);initial=base;current=initial;predictions=Object.fromEntries(seed.map(p=>[`${p.rodada}:${p.mandante}:${p.visitante}`,{home:p.home,away:p.away}]));
-  $('round-select').append(new Option('Rodada 21 · adiados',21));for(let r=29;r<=38;r++)$('round-select').append(new Option(`Rodada ${r}`,r));$('round-select').addEventListener('change',e=>{roundChosenByUser=true;selectedRound=Number(e.target.value);renderAll()});$('previous').addEventListener('click',()=>{roundChosenByUser=true;selectedRound=selectedRound===29?21:selectedRound-1;renderAll()});$('next').addEventListener('click',()=>{roundChosenByUser=true;selectedRound=selectedRound===21?29:selectedRound+1;renderAll()});$('view-real').addEventListener('click',()=>{tableView='real';renderTable()});$('view-desola').addEventListener('click',()=>{tableView='desola';renderTable()});$('refresh-results').addEventListener('click',refreshResults);$('export-csv').addEventListener('click',exportCSV);renderAll();
+  window.addEventListener('hashchange',selectView);selectView();$('round-select').append(new Option('Rodada 21 · adiados',21));for(let r=29;r<=38;r++)$('round-select').append(new Option(`Rodada ${r}`,r));$('round-select').addEventListener('change',e=>{roundChosenByUser=true;selectedRound=Number(e.target.value);renderAll()});$('previous').addEventListener('click',()=>{roundChosenByUser=true;selectedRound=selectedRound===29?21:selectedRound-1;renderAll()});$('next').addEventListener('click',()=>{roundChosenByUser=true;selectedRound=selectedRound===21?29:selectedRound+1;renderAll()});$('view-real').addEventListener('click',()=>{tableView='real';renderTable()});$('view-desola').addEventListener('click',()=>{tableView='desola';renderTable()});$('refresh-results').addEventListener('click',refreshResults);$('export-csv').addEventListener('click',exportCSV);renderAll();
   if(DEMO_MODE)showDemo();else await refreshResults();
 }
 init().catch(error=>{$('source-status').textContent='Erro ao carregar dados';$('notice').textContent=error.message;$('notice').hidden=false});

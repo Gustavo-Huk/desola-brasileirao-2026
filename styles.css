@@ -11,6 +11,7 @@
   --muted: #aaa9a4;
 }
 * { box-sizing: border-box }
+[hidden] { display: none !important }
 body { margin: 0; min-width: 320px; background: radial-gradient(ellipse 56% 330px at 50% 4%, #25200e 0%, #0c0c0c 100%) fixed }
 button, select { font: inherit }
 button, a { cursor: pointer }
@@ -55,6 +56,61 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .metric span { color: #c5c3ba; font-size: 14px }
 .metric strong { display: block; font-size: 33px; letter-spacing: -.05em; margin: 9px 0 3px; line-height: 1; color: var(--yellow); font-variant-numeric: tabular-nums }
 .metric small { color: #a6a398; font-size: 12px }
+.page-tabs { display: flex; gap: 8px; border-bottom: 1px solid #3b392f; margin: 0 0 22px }
+.page-tabs a { display: inline-flex; align-items: center; gap: 9px; padding: 12px 19px; color: #b6b4ad; font-weight: 750; font-size: 14px; text-decoration: none; border-bottom: 3px solid transparent }
+.page-tabs a:hover { color: #fff }
+.page-tabs a[aria-current="page"] { color: var(--yellow); border-color: var(--yellow) }
+.analysis-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 9px 0 21px }
+.analysis-heading h2 { font-size: clamp(26px, 2.8vw, 34px); margin-bottom: 8px }
+.analysis-heading p:last-child { margin: 0; color: #b8b5a9; line-height: 1.5; max-width: 730px; font-size: 14px }
+.sample-pill { border: 1px solid #76651e; background: #282312; color: #f9df69; border-radius: 999px; padding: 7px 11px; font-size: 12px; font-weight: 750; white-space: nowrap }
+.analysis-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; align-items: stretch }
+.analysis-card { background: var(--panel); border: 1px solid var(--stroke); border-radius: 12px; padding: 23px; min-width: 0 }
+.analysis-card h3 { font-size: 19px; letter-spacing: -.025em; line-height: 1.25; margin-bottom: 10px }
+.card-intro { font-size: 13px; color: #aaa89f; line-height: 1.5; margin-bottom: 20px }
+.fine-print { font-size: 12px; color: #938f84; line-height: 1.5; margin: 18px 0 0 }
+.round-analysis-line { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 14px; margin-bottom: 9px }
+.round-analysis-line span { font-variant-numeric: tabular-nums; color: #d3d0c5 }
+.bar-track { width: 100%; height: 9px; background: #30302e; overflow: hidden; border-radius: 99px }
+.bar-fill { display: block; height: 100%; background: var(--yellow); border-radius: inherit; transition: width .25s ease }
+.round-analysis-row { border-top: 1px solid var(--stroke); padding: 12px 0 }
+.round-analysis-row:first-child { border-top: 0; padding-top: 0 }
+.round-analysis-line { font-size: 13px; margin-bottom: 7px }
+.round-analysis-row .bar-track { height: 7px }
+.matrix-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+.matrix-table th, .matrix-table td { padding: 13px 7px; text-align: center; border-bottom: 1px solid var(--stroke) }
+.matrix-table th { font-size: 11px; color: #b7b4a9; line-height: 1.4 }
+.matrix-table th:first-child { text-align: left; min-width: 80px }
+.matrix-table td { font-size: 16px; font-weight: 800 }
+.matrix-table .matrix-hit { color: var(--yellow); background: #302a11 }
+.matrix-table .matrix-miss { color: #d9d6cf }
+.matrix-table .matrix-total, .matrix-table tfoot td { color: #a8a49a; font-size: 13px }
+.matrix-table tfoot th, .matrix-table tfoot td { border-bottom: 0; border-top: 2px solid #4c493b }
+.benchmark-card { margin-top: 18px }
+.benchmark-heading { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start }
+.benchmark-heading .card-intro { max-width: 690px; margin-bottom: 19px }
+.benchmark-difference { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; font-variant-numeric: tabular-nums }
+.benchmark-difference span { color: #a9a69b; font-size: 12px }
+.benchmark-difference strong { font-size: 24px; letter-spacing: -.03em }
+.benchmark-difference .positive { color: #a2e6b9 }
+.benchmark-difference .negative { color: #ffb8ab }
+.benchmark-list { max-width: 690px }
+.benchmark-item + .benchmark-item { margin-top: 20px }
+.benchmark-line { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 14px; font-variant-numeric: tabular-nums }
+.benchmark-line span { color: #d4d1c7 }
+.benchmark-item.featured .benchmark-line span { color: var(--yellow); font-weight: 800 }
+.benchmark-item:not(.featured) .bar-fill { background: #aaa69a }
+.projection-card { margin-top: 18px }
+.projection-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px }
+.projection-heading .card-intro { max-width: 730px }
+.projection-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+.projection-table th { color: #aaa69b; font-size: 11px; text-align: left; white-space: nowrap }
+.projection-table th, .projection-table td { padding: 11px 10px; border-bottom: 1px solid var(--stroke) }
+.projection-table td { font-size: 13px }
+.projection-table td:nth-child(2) { min-width: 145px; font-weight: 700 }
+.projection-table .scenario-points { color: var(--yellow); font-weight: 800 }
+.projection-table .rank { color: #aaa69b }
+.projection-table td:last-child { font-weight: 750; white-space: nowrap }
 .workspace { display: grid; grid-template-columns: minmax(0, 1.48fr) minmax(370px, 1fr); gap: 20px }
 .round-card, .side-panel, .insights { padding: 23px }
 .section-head { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px }
@@ -115,6 +171,7 @@ tr:last-child td { border-bottom: 0 }
 footer { border-top: 1px solid var(--stroke); color: #aaa79e; padding: 24px 28px; text-align: center; font-size: 12px }
 footer a { color: #f2dc68 }
 @media (max-width: 1000px) { .workspace { grid-template-columns: 1fr } .side-panel { max-width: none } .table-wrap { max-height: 600px; overflow: auto } }
+@media (max-width: 900px) { .analysis-grid { grid-template-columns: 1fr } }
 @media (max-width: 640px) {
   .topbar { min-height: 70px; padding: 10px 16px }
   .brand { gap: 9px } .brand-mark { width: 44px; height: 44px }
@@ -135,5 +192,12 @@ footer a { color: #f2dc68 }
   .verdict { font-size: 11px !important; padding: 3px 4px }
   .insight-grid { grid-template-columns: 1fr }
   .round-footer { align-items: flex-start } .round-footer span { max-width: 150px }
+  .analysis-heading { align-items: flex-start; flex-direction: column }
+  .analysis-card { padding: 17px }
+  .benchmark-heading { flex-direction: column; gap: 0 }
+  .benchmark-difference { align-items: flex-start; margin-bottom: 20px }
+  .projection-heading { flex-direction: column; gap: 0 }
+  .projection-heading .sample-pill { margin-bottom: 18px }
+  .page-tabs a { padding: 10px 13px }
 }
 @media (max-width: 390px) { .game-header, .match { grid-template-columns: minmax(0, 1fr) 82px 75px } .score-box { width: 29px } }

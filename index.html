@@ -22,6 +22,10 @@
       <div class="source-status"><span class="signal" id="signal"></span><span id="source-status">Carregando resultados...</span><small id="source-time"></small><button class="refresh-button" id="refresh-results" type="button">Atualizar resultados ↻</button></div>
     </section>
 
+    <nav class="page-tabs" aria-label="Seções do painel"><a id="tab-overview" href="#painel" aria-current="page">Painel</a><a id="tab-analysis" href="#analises">Análises</a></nav>
+
+    <div id="overview-panel">
+
     <section class="metrics" aria-label="Resumo dos palpites">
       <article class="metric"><span>Acerto de resultado</span><strong id="outcome-accuracy">—</strong><small id="outcome-detail">vitória, empate ou derrota</small></article>
       <article class="metric"><span>Jogos avaliados</span><strong id="evaluated">—</strong><small>com palpite e placar final</small></article>
@@ -47,6 +51,17 @@
     </section>
 
     <section class="insights" aria-label="Diferenças por time"><div class="section-head"><div><p class="eyebrow">QUEM GANHOU MAIS NOS PALPITES?</p><h2>Mais favorecidos e prejudicados</h2></div></div><p class="insight-help">Diferença de pontos entre o que foi previsto e o que aconteceu, somente nos jogos com palpite e resultado final.</p><div class="insight-grid"><div class="insight-box"><h3>Favorecidos nos palpites</h3><div id="benefited"></div></div><div class="insight-box"><h3>Prejudicados nos palpites</h3><div id="harmed"></div></div></div></section>
+    </div>
+
+    <section id="analysis-panel" class="analysis-page" aria-labelledby="analysis-title" hidden>
+      <div class="analysis-heading"><div><p class="eyebrow">EVOLUÇÃO DOS PALPITES</p><h2 id="analysis-title">Análises dos palpites</h2><p>Resultado correto significa acertar mandante, empate ou visitante. Os números acompanham apenas jogos com palpite e placar final.</p></div><span class="sample-pill" id="analysis-sample">Aguardando resultados</span></div>
+      <div class="analysis-grid">
+        <article class="analysis-card"><p class="eyebrow">LINHA DO TEMPO</p><h3>Acerto por rodada</h3><p class="card-intro">Cada barra mostra a proporção de acertos entre os jogos avaliados daquela rodada. O número de jogos aparece ao lado para contextualizar rodadas parciais.</p><div id="round-analysis" class="round-analysis"></div><p class="fine-print">Jogos adiados aparecem na rodada original. Rodadas ainda parciais podem mudar conforme novos resultados chegam.</p></article>
+        <article class="analysis-card"><p class="eyebrow">TIPOS DE ACERTO E ERRO</p><h3>Palpite × resultado real</h3><p class="card-intro">As linhas são os palpites; as colunas, o que realmente aconteceu. A diagonal amarela mostra os acertos.</p><div class="table-wrap"><table class="matrix-table"><thead><tr><th scope="col">Palpite ↓<br>Real →</th><th scope="col">Mandante</th><th scope="col">Empate</th><th scope="col">Visitante</th><th scope="col">Total</th></tr></thead><tbody id="outcome-matrix"></tbody><tfoot><tr><th scope="row">Total real</th><td id="real-home">0</td><td id="real-draw">0</td><td id="real-away">0</td><td id="matrix-total">0</td></tr></tfoot></table></div><p class="fine-print" id="matrix-note">Aguardando resultados.</p></article>
+      </div>
+      <article class="analysis-card benchmark-card"><div class="benchmark-heading"><div><p class="eyebrow">REFERÊNCIA SIMPLES</p><h3>De Sola × sempre mandante</h3><p class="card-intro">E se alguém previsse vitória do mandante em todos os jogos? Compare os acertos das duas estratégias na mesma amostra de partidas encerradas.</p></div><div class="benchmark-difference"><span>Diferença do De Sola</span><strong id="benchmark-delta">—</strong></div></div><div class="benchmark-list" id="benchmark-list"></div><p class="fine-print">A referência acerta somente quando o mandante vence. A diferença é descritiva e pode mudar conforme novos jogos terminam.</p></article>
+      <article class="analysis-card projection-card"><div class="projection-heading"><div><p class="eyebrow">CENÁRIO CONDICIONAL</p><h3>Se os palpites restantes acontecerem</h3><p class="card-intro">Classificação com os resultados reais já confirmados e os palpites do De Sola nos jogos ainda sem placar. Compare com a posição e os pontos atuais.</p></div><span class="sample-pill" id="projection-pending">— palpites pendentes</span></div><div class="table-wrap"><table class="projection-table"><thead><tr><th scope="col">#</th><th scope="col">Time</th><th scope="col">Pos. atual</th><th scope="col">Pts atuais</th><th scope="col">Pts no cenário</th><th scope="col">Δ pos.</th></tr></thead><tbody id="projection-standings"></tbody></table></div><p class="fine-print">É uma simulação determinística, sem probabilidade de título ou rebaixamento. <span id="projection-coverage"></span></p></article>
+    </section>
 
   </main>
   <footer>Projeto independente, sem vínculo com o De Sola. <a href="https://www.youtube.com/watch?v=PCiC1YX8raA" target="_blank" rel="noopener noreferrer">Simulação original no YouTube</a> · <a href="https://valorfinal.com.br/brasileirao/dados-abertos" target="_blank" rel="noopener noreferrer">Fonte dos resultados</a></footer>
