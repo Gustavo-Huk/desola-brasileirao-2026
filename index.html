@@ -16,14 +16,14 @@
     <a class="video-link" href="https://www.youtube.com/watch?v=PCiC1YX8raA" target="_blank" rel="noopener noreferrer" aria-label="Assistir ao vídeo original da simulação no YouTube"><img src="./assets/de-sola-integrantes.png" alt="" width="46" height="46"><span>Vídeo da simulação<small>Assistir no YouTube ↗</small></span></a>
   </header>
   <main class="shell">
-    <div class="preview-banner"><strong>PRÉVIA PARA AVALIAÇÃO</strong><span>Acerto por rodada está em teste. A versão de produção continua no <a href="https://desola-brasileirao-2026.vercel.app/">site principal ↗</a>.</span></div>
+    <div class="preview-banner"><strong>PRÉVIA PARA AVALIAÇÃO</strong><span>As análises por rodada e por tipo de resultado estão em teste. A versão de produção continua no <a href="https://desola-brasileirao-2026.vercel.app/">site principal ↗</a>.</span></div>
     <div class="demo-banner" id="demo-banner" hidden><strong>PRÉVIA DE TESTE</strong><span>Os resultados da 29ª rodada nesta tela são fictícios para demonstrar acertos e erros. Nenhum dado oficial foi alterado.</span><a href="./">Voltar aos resultados reais ↗</a></div>
     <section class="heading">
       <div><p class="eyebrow">PLACAR DOS PALPITES</p><h1>Até onde o simulador acertou?</h1><p class="intro"><span>Os 103 palpites da simulação, jogo a jogo, comparados aos resultados reais.</span><span>Os placares usam 0–0 para empate e 1–0 para vitória.</span></p></div>
       <div class="source-status"><span class="signal" id="signal"></span><span id="source-status">Carregando resultados...</span><small id="source-time"></small><button class="refresh-button" id="refresh-results" type="button">Atualizar resultados ↻</button></div>
     </section>
 
-    <nav class="page-tabs" aria-label="Seções do painel"><a id="tab-overview" href="#painel" aria-current="page">Painel</a><a id="tab-analysis" href="#analises">Acerto por rodada <span>Prévia</span></a></nav>
+    <nav class="page-tabs" aria-label="Seções do painel"><a id="tab-overview" href="#painel" aria-current="page">Painel</a><a id="tab-analysis" href="#analises">Análises <span>Prévia</span></a></nav>
 
     <div id="overview-panel">
 
@@ -55,8 +55,11 @@
     </div>
 
     <section id="analysis-panel" class="analysis-page" aria-labelledby="analysis-title" hidden>
-      <div class="analysis-heading"><div><p class="eyebrow">EVOLUÇÃO DOS PALPITES</p><h2 id="analysis-title">Acerto por rodada</h2><p>Resultado correto significa acertar mandante, empate ou visitante. Os números acompanham apenas jogos com palpite e placar final.</p></div><span class="sample-pill" id="analysis-sample">Aguardando resultados</span></div>
-      <article class="analysis-card round-feature"><p class="eyebrow">LINHA DO TEMPO</p><h3>Rodada a rodada</h3><p class="card-intro">Cada barra mostra a proporção de acertos entre os jogos avaliados daquela rodada. O número de jogos aparece ao lado para contextualizar rodadas parciais.</p><div id="round-analysis" class="round-analysis"></div><p class="fine-print">Jogos adiados aparecem na rodada original. Rodadas ainda parciais podem mudar conforme novos resultados chegam.</p></article>
+      <div class="analysis-heading"><div><p class="eyebrow">EVOLUÇÃO DOS PALPITES</p><h2 id="analysis-title">Análises dos palpites</h2><p>Resultado correto significa acertar mandante, empate ou visitante. Os números acompanham apenas jogos com palpite e placar final.</p></div><span class="sample-pill" id="analysis-sample">Aguardando resultados</span></div>
+      <div class="analysis-grid">
+        <article class="analysis-card"><p class="eyebrow">LINHA DO TEMPO</p><h3>Acerto por rodada</h3><p class="card-intro">Cada barra mostra a proporção de acertos entre os jogos avaliados daquela rodada. O número de jogos aparece ao lado para contextualizar rodadas parciais.</p><div id="round-analysis" class="round-analysis"></div><p class="fine-print">Jogos adiados aparecem na rodada original. Rodadas ainda parciais podem mudar conforme novos resultados chegam.</p></article>
+        <article class="analysis-card"><p class="eyebrow">TIPOS DE ACERTO E ERRO</p><h3>Palpite × resultado real</h3><p class="card-intro">As linhas são os palpites; as colunas, o que realmente aconteceu. A diagonal amarela mostra os acertos.</p><div class="table-wrap"><table class="matrix-table"><thead><tr><th scope="col">Palpite ↓<br>Real →</th><th scope="col">Mandante</th><th scope="col">Empate</th><th scope="col">Visitante</th><th scope="col">Total</th></tr></thead><tbody id="outcome-matrix"></tbody><tfoot><tr><th scope="row">Total real</th><td id="real-home">0</td><td id="real-draw">0</td><td id="real-away">0</td><td id="matrix-total">0</td></tr></tfoot></table></div><p class="fine-print" id="matrix-note">Aguardando resultados.</p></article>
+      </div>
     </section>
 
   </main>

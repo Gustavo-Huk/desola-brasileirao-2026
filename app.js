@@ -44,22 +44,37 @@ function renderInsights(){const delta=new Map(current.acervo.times.map(t=>[t.cod
   $('round-average').textContent=byRound.size?`${Math.round(roundAverage*100)}%`:'—';$('round-average-detail').textContent=byRound.size?`${byRound.size} ${byRound.size===1?'rodada avaliada':'rodadas avaliadas'} · mesmo peso por rodada`:'aguardando jogos encerrados';
   function fill(id,items){const host=$(id);host.replaceChildren();if(!items.length){host.append(element('p','insight-empty','Os desvios aparecerão quando houver palpites para jogos encerrados.'));return}for(const [code,value] of items.slice(0,5)){const row=element('div','insight-row');row.append(element('span','',teamName(code)),element('strong',value>0?'positive':'negative',`${value>0?'+':''}${value} pts`));host.append(row)}}const entries=[...delta].filter(([,v])=>v!==0);fill('benefited',entries.filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]));fill('harmed',entries.filter(([,v])=>v<0).sort((a,b)=>a[1]-b[1]))}
 function renderAnalysis(){
-  const rounds=new Map();let evaluated=0;
+  const rounds=new Map(),types=[{id:1,label:'Mandante'},{id:0,label:'Empate'},{id:-1,label:'Visitante'}];
+  const matrix=new Map(types.map(type=>[type.id,new Map(types.map(actual=>[actual.id,0]))]));
+  const actualTotals=new Map(types.map(type=>[type.id,0]));let evaluated=0,correct=0;
   for(const game of allGames().filter(eligible)){
     const p=prediction(game),r=result(game);if(!p||!r)continue;
+    const guessed=outcome(p),actual=outcome(r);
+    matrix.get(guessed).set(actual,matrix.get(guessed).get(actual)+1);
+    actualTotals.set(actual,actualTotals.get(actual)+1);
     evaluated++;const tally=rounds.get(game.rodada)||{games:0,correct:0};
-    tally.games++;if(outcome(p)===outcome(r))tally.correct++;
+    tally.games++;if(guessed===actual){tally.correct++;correct++}
     rounds.set(game.rodada,tally);
   }
   $('analysis-sample').textContent=evaluated?`${evaluated} ${evaluated===1?'jogo avaliado':'jogos avaliados'} · ${rounds.size} ${rounds.size===1?'rodada':'rodadas'}`:'Aguardando resultados';
   const host=$('round-analysis');host.replaceChildren();
-  if(!rounds.size){host.append(element('p','insight-empty','Aguardando jogos encerrados.'));return}
+  if(!rounds.size)host.append(element('p','insight-empty','Aguardando jogos encerrados.'));
   for(const [round,tally] of [...rounds].sort((a,b)=>a[0]-b[0])){
     const item=element('div','round-analysis-row'),heading=element('div','round-analysis-line');
     heading.append(element('strong','',round===21?'Rodada 21 · adiados':`Rodada ${round}`),element('span','',`${tally.correct} de ${tally.games} · ${Math.round(tally.correct/tally.games*100)}%`));
     const track=element('div','bar-track'),fill=element('span','bar-fill');
     fill.style.width=`${tally.correct/tally.games*100}%`;track.append(fill);item.append(heading,track);host.append(item);
   }
+  const body=$('outcome-matrix');body.replaceChildren();
+  for(const type of types){
+    const tr=element('tr'),heading=element('th','',type.label);heading.scope='row';tr.append(heading);
+    let rowTotal=0;
+    for(const actual of types){const count=matrix.get(type.id).get(actual.id);rowTotal+=count;tr.append(element('td',type.id===actual.id?'matrix-hit':'matrix-miss',count))}
+    tr.append(element('td','matrix-total',rowTotal));body.append(tr);
+  }
+  for(const [id,type] of [['real-home',1],['real-draw',0],['real-away',-1]])$(id).textContent=actualTotals.get(type);
+  $('matrix-total').textContent=evaluated;
+  $('matrix-note').textContent=evaluated?`${correct} acertos e ${evaluated-correct} erros em ${evaluated} jogos. Cada jogo entra uma única vez.`:'Aguardando resultados.';
 }
 function selectView(){const analysis=location.hash==='#analises';$('overview-panel').hidden=analysis;$('analysis-panel').hidden=!analysis;for(const [id,active] of [['tab-overview',!analysis],['tab-analysis',analysis]]){if(active)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current')}}
 function renderAll(){renderGames();renderTable();renderInsights();renderAnalysis()}

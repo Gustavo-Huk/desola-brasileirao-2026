@@ -68,8 +68,8 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .analysis-heading h2 { font-size: clamp(26px, 2.8vw, 34px); margin-bottom: 8px }
 .analysis-heading p:last-child { margin: 0; color: #b8b5a9; line-height: 1.5; max-width: 730px; font-size: 14px }
 .sample-pill { border: 1px solid #76651e; background: #282312; color: #f9df69; border-radius: 999px; padding: 7px 11px; font-size: 12px; font-weight: 750; white-space: nowrap }
+.analysis-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; align-items: start }
 .analysis-card { background: var(--panel); border: 1px solid var(--stroke); border-radius: 12px; padding: 23px; min-width: 0 }
-.round-feature { max-width: 760px }
 .analysis-card h3 { font-size: 19px; letter-spacing: -.025em; line-height: 1.25; margin-bottom: 10px }
 .card-intro { font-size: 13px; color: #aaa89f; line-height: 1.5; margin-bottom: 20px }
 .fine-print { font-size: 12px; color: #938f84; line-height: 1.5; margin: 18px 0 0 }
@@ -81,6 +81,15 @@ h3 { font-size: 16px; margin-bottom: 12px }
 .round-analysis-row:first-child { border-top: 0; padding-top: 0 }
 .round-analysis-line { font-size: 13px; margin-bottom: 7px }
 .round-analysis-row .bar-track { height: 7px }
+.matrix-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+.matrix-table th, .matrix-table td { padding: 13px 7px; text-align: center; border-bottom: 1px solid var(--stroke) }
+.matrix-table th { font-size: 11px; color: #b7b4a9; line-height: 1.4 }
+.matrix-table th:first-child { text-align: left; min-width: 80px }
+.matrix-table td { font-size: 16px; font-weight: 800 }
+.matrix-table .matrix-hit { color: var(--yellow); background: #302a11 }
+.matrix-table .matrix-miss { color: #d9d6cf }
+.matrix-table .matrix-total, .matrix-table tfoot td { color: #a8a49a; font-size: 13px }
+.matrix-table tfoot th, .matrix-table tfoot td { border-bottom: 0; border-top: 2px solid #4c493b }
 .workspace { display: grid; grid-template-columns: minmax(0, 1.48fr) minmax(370px, 1fr); gap: 20px }
 .round-card, .side-panel, .insights { padding: 23px }
 .section-head { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px }
